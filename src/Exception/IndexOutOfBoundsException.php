@@ -2,7 +2,7 @@
 
 namespace PHPCollection\Exception;
 
-class IndexOutOfBoundsException
+class IndexOutOfBoundsException extends \RuntimeException
 {
 
 }
