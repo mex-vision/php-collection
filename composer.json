@@ -1,0 +1,21 @@
+{
+    "name": "mex-vision/php-collection",
+    "description": "Java framework projection on PHP realities",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PHPCollection\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mex-vision",
+            "email": "mex.vision.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.0"
+    }
+}
