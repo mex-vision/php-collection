@@ -23,9 +23,13 @@ class ArrayList extends AbstractCollection
 	public function add(mixed $element, int $index = null): bool
 	{
 		if(is_null($index))
+		{
 			array_splice($this->elements, $this->count(), 0, $element);
-		else
-			array_splice($this->elements, $index, 0, $element);
+			return true;
+		}
+		if($index < 0 or $index > $this->count())
+			throw new IndexOutOfBoundsException();
+		array_splice($this->elements, $index, 0, $element);
 		return true;
 	}
 
@@ -39,7 +43,7 @@ class ArrayList extends AbstractCollection
 		$result = false;
 		foreach ($collection as $element)
 		{
-			$changed = $this->add($index, $element);
+			$changed = $this->add($element, $index);
 			if(!$result)
 				$result = $changed;
 			if(!is_null($index))
@@ -110,10 +114,13 @@ class ArrayList extends AbstractCollection
 
 	/**
 	 * @param int $index
-	 * @return bool
+	 * @return T
 	 */
-	public function removeIndex(int $index): bool
+	public function removeIndex(int $index): mixed
 	{
+		if($index < 0 or $index >= $this->count())
+			throw new IndexOutOfBoundsException();
+
 		$result = $this->get($index);
 		array_splice($this->elements, $index, 1);
 		return $result;
@@ -139,14 +146,13 @@ class ArrayList extends AbstractCollection
 	 */
 	public function removeIf(callable $filter, bool $all = false): bool
 	{
-		$result = false;
 		foreach ($this->elements as $index => $element)
 		{
 			$filterResult = $filter($element, $index);
 			if($filterResult)
-				$result = $this->remove($element, $all);
+				return $this->remove($element, $all);
 		}
-		return $result;
+		return false;
 	}
 
 	/**
@@ -183,7 +189,7 @@ class ArrayList extends AbstractCollection
 	public function get(int $index): mixed
 	{
 		if(!array_key_exists($index, $this->elements))
-			return new IndexOutOfBoundsException();
+			throw new IndexOutOfBoundsException();
 		return $this->elements[$index];
 	}
 
@@ -221,6 +227,8 @@ class ArrayList extends AbstractCollection
 	{
 		if(!array_key_exists($index, $this->elements))
 			throw new IndexOutOfBoundsException();
+		if($this->elements[$index] === $element)
+			return false;
 		$this->elements[$index] = $element;
 		return true;
 	}
@@ -241,5 +249,13 @@ class ArrayList extends AbstractCollection
 			if($index >= $from and $index < $to)
 				$result->add($element);
 		return $result;
+	}
+
+	public static function ofArray(array $array): ArrayList
+	{
+		$arrayList = new ArrayList();
+		foreach ($array as $item)
+			$arrayList->add($item);
+		return $arrayList;
 	}
 }
