@@ -24,12 +24,12 @@ class ArrayList extends AbstractCollection
 	{
 		if(is_null($index))
 		{
-			array_splice($this->elements, $this->count(), 0, $element);
+			array_splice($this->elements, $this->count(), 0, [$element]);
 			return true;
 		}
 		if($index < 0 or $index > $this->count())
 			throw new IndexOutOfBoundsException();
-		array_splice($this->elements, $index, 0, $element);
+		array_splice($this->elements, $index, 0, [$element]);
 		return true;
 	}
 
