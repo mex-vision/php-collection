@@ -146,6 +146,10 @@ class ArrayList extends AbstractCollection
 	 */
 	public function removeIf(callable $filter, bool $all = false): bool
 	{
+		/**
+		 * @var int $index
+		 * @var T $element
+		 */
 		foreach ($this->elements as $index => $element)
 		{
 			$filterResult = $filter($element, $index);
